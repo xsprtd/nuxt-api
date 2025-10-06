@@ -94,6 +94,12 @@ const attachToken = async (
   }
 }
 
+const extractHeaders = (context: FetchContext): { [k: string]: string } => {
+  return context.options.headers instanceof Headers
+    ? Object.fromEntries<string>(context.options.headers.entries())
+    : context.options.headers
+}
+
 /**
  * Prepare request context.
  */
@@ -105,9 +111,8 @@ const prepareContext = async (
 
   context.options.headers = new Headers({
     Accept: 'application/json',
-    ...(context.options.headers instanceof Headers
-      ? Object.fromEntries(context.options.headers.entries())
-      : context.options.headers),
+    ...config.headers,
+    ...(extractHeaders(context)),
   })
 
   if (context.options.body instanceof FormData) {

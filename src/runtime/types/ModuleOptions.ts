@@ -32,6 +32,11 @@ export interface ModuleOptions {
   userResponseKey?: null | string
 
   /**
+   * Custom headers to include in API requests.
+   */
+  headers: { [k: string]: string }
+
+  /**
    * The token specific options.
    */
   token: {
