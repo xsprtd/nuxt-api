@@ -3,7 +3,7 @@ import { useApiOptions } from '../composables/useApiOptions'
 import type { ModuleOptions } from '../types/ModuleOptions'
 import { useErrorBag } from '../composables/useErrorBag'
 import { useTokenStorage } from '../composables/useTokenStorage'
-import { useCookie, useNuxtApp, useRequestHeaders, useRequestURL } from '#app'
+import { useCookie, useRequestHeaders, useRequestURL } from '#app'
 
 /**
  * Get credentials.
@@ -177,7 +177,7 @@ export default (options?: FetchOptions): FetchOptions => {
     },
 
     onResponseError: async (context): Promise<void> => {
-      useErrorBag().handle(context)
+      useErrorBag().handle(context as unknown as Error)
 
       if (options.onResponseError) {
         if (Array.isArray(options.onResponseError)) {

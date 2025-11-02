@@ -1,5 +1,5 @@
-type AuthMode = 'cookie' | 'token'
-type TokenStorageType = 'cookie' | 'localStorage'
+export type AuthMode = 'cookie' | 'token'
+export type TokenStorageType = 'cookie' | 'localStorage'
 
 export interface ModuleOptions {
   /**

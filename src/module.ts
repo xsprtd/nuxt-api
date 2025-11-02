@@ -9,13 +9,13 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: MODULE_CONFIG_KEY,
   },
   defaults: {
-    apiBaseURL: process.env.API_BASE_URL,
-    authMode: 'cookie',
+    apiBaseURL: process.env.API_BASE_URL || '',
+    authMode: 'cookie' as const,
     userStateKey: 'user',
     headers: {},
     token: {
       storageKey: 'AUTH_TOKEN',
-      storageType: 'cookie',
+      storageType: 'cookie' as const,
       responseKey: 'token',
     },
     fetchOptions: {
@@ -53,12 +53,13 @@ export default defineNuxtModule<ModuleOptions>({
     const runtimeDir = resolver.resolve('./runtime')
     nuxt.options.build.transpile.push(runtimeDir)
 
-    const moduleOptions: ModuleOptions = defu(
+    const moduleOptions = defu(
       nuxt.options.runtimeConfig.public[MODULE_CONFIG_KEY] || {},
       options,
-    )
+    ) as ModuleOptions
 
-    nuxt.options.runtimeConfig.public[MODULE_CONFIG_KEY] = moduleOptions
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    nuxt.options.runtimeConfig.public[MODULE_CONFIG_KEY] = moduleOptions as any
 
     addPlugin(resolver.resolve('./runtime/plugin'))
     addImportsDir(resolver.resolve('./runtime/composables'))

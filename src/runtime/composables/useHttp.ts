@@ -38,7 +38,7 @@ export const useHttp = (): Http => {
     }
     catch (error: unknown) {
       stopProcessing()
-      errorBag.handle(error)
+      errorBag.handle(error as Error)
       throw error
     }
   }
