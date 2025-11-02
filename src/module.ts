@@ -12,6 +12,7 @@ export default defineNuxtModule<ModuleOptions>({
     apiBaseURL: process.env.API_BASE_URL,
     authMode: 'cookie',
     userStateKey: 'user',
+    headers: {},
     token: {
       storageKey: 'AUTH_TOKEN',
       storageType: 'cookie',
