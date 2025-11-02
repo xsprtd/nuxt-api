@@ -2489,6 +2489,264 @@ If user data isn't loading:
 
 ---
 
+## Building & Publishing
+
+This section is for contributors and maintainers who want to build, test, or publish this module.
+
+### Development Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/xsprtd/nuxt-api.git
+   cd nuxt-api
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Prepare development environment**:
+   ```bash
+   npm run dev:prepare
+   ```
+
+   This command:
+   - Builds the module in stub mode
+   - Prepares the module builder
+   - Prepares the playground for testing
+
+4. **Start development server**:
+   ```bash
+   npm run dev
+   ```
+
+### Building for Production
+
+To build the module for production:
+
+```bash
+npm run prepack
+```
+
+This compiles the TypeScript source and generates:
+- `dist/module.mjs` - ESM (ECMAScript Module) format
+- `dist/module.cjs` - CommonJS format
+- `dist/types.d.ts` - TypeScript type definitions
+- `dist/runtime/` - Runtime files
+
+### Testing
+
+Before publishing, run all tests:
+
+```bash
+# Lint code
+npm run lint
+
+# Run unit tests
+npm run test
+
+# Watch mode for tests
+npm run test:watch
+
+# Type checking
+npm run test:types
+```
+
+### Local Testing
+
+To test the module in another project before publishing:
+
+1. **Link the module locally**:
+   ```bash
+   # In the nuxt-api directory
+   npm link
+   ```
+
+2. **Use the linked module in your project**:
+   ```bash
+   # In your Nuxt project
+   npm link @xsprtd/nuxt-api
+   ```
+
+3. **Test your changes**
+
+4. **Unlink when done**:
+   ```bash
+   # In your Nuxt project
+   npm unlink @xsprtd/nuxt-api
+
+   # In the nuxt-api directory
+   npm unlink
+   ```
+
+### Publishing to npm
+
+#### Automated Release (Recommended)
+
+The automated release workflow handles versioning, changelog, building, and publishing:
+
+```bash
+npm run release
+```
+
+This command:
+1. Runs linting
+2. Builds the module
+3. Generates changelog using `changelogen`
+4. Publishes to npm
+5. Pushes git tags
+
+#### Manual Release
+
+If you prefer manual control over the release process:
+
+1. **Run quality checks**:
+   ```bash
+   npm run lint
+   npm run test
+   npm run test:types
+   ```
+
+2. **Build the module**:
+   ```bash
+   npm run prepack
+   ```
+
+3. **Update version** (choose one):
+   ```bash
+   npm version patch  # 1.0.0 -> 1.0.1 (bug fixes)
+   npm version minor  # 1.0.0 -> 1.1.0 (new features)
+   npm version major  # 1.0.0 -> 2.0.0 (breaking changes)
+   ```
+
+4. **Publish to npm**:
+   ```bash
+   npm publish
+   ```
+
+5. **Push changes and tags**:
+   ```bash
+   git push --follow-tags
+   ```
+
+### Version Management
+
+This project follows [Semantic Versioning](https://semver.org/):
+
+- **PATCH** (1.0.x): Bug fixes and minor updates
+- **MINOR** (1.x.0): New features, backward compatible
+- **MAJOR** (x.0.0): Breaking changes
+
+### Build Output
+
+After building, the `dist/` directory contains:
+
+```
+dist/
+├── module.mjs           # ESM entry point
+├── module.cjs           # CommonJS entry point
+├── types.d.ts           # TypeScript definitions
+└── runtime/             # Runtime composables and utilities
+    ├── composables/
+    ├── middleware/
+    ├── services/
+    └── types/
+```
+
+### Pre-publish Checklist
+
+Before publishing a new version:
+
+- [ ] All tests pass (`npm run test`)
+- [ ] No linting errors (`npm run lint`)
+- [ ] Type checking passes (`npm run test:types`)
+- [ ] Updated README if needed
+- [ ] Updated CHANGELOG (or use automated release)
+- [ ] Version bumped appropriately
+- [ ] Tested locally with `npm link`
+- [ ] Build succeeds (`npm run prepack`)
+
+### CI/CD
+
+If using GitHub Actions or similar, you can automate releases:
+
+```yaml
+# .github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: |
+          npm run lint
+          npm run test
+          npm run test:types
+
+      - name: Build
+        run: npm run prepack
+
+      - name: Semantic Release
+        run: npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+### Available Scripts
+
+```bash
+# Development
+npm run dev              # Start playground dev server
+npm run dev:build        # Build playground
+npm run dev:prepare      # Prepare development environment
+
+# Building
+npm run prepack          # Build module for production
+npm run prepare          # Prepare module (runs automatically)
+
+# Testing
+npm run lint             # Lint code with ESLint
+npm run test             # Run tests with Vitest
+npm run test:watch       # Run tests in watch mode
+npm run test:types       # Type check with vue-tsc
+
+# Publishing
+npm run release          # Full release workflow
+npm run semantic-release # Semantic versioning release
+npm run link             # Link module locally
+```
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
 ## License
 
 This module is licensed under the [MIT license](https://opensource.org/license/MIT).
