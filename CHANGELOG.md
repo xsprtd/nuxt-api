@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Updated package.json exports to use `.d.mts` types format (module-builder v1.0 compatibility)
 - Updated `@nuxt/module-builder` from ^0.8.4 to ^1.0.2
 - Updated `happy-dom` to ^20.0.0
 - Moved Prettier configuration to package.json
