@@ -48,13 +48,33 @@ export const useRouter = vi.fn(() => ({
 
 export const navigateTo = vi.fn();
 
+const cookieStore: Record<string, string | null | undefined> = {};
+
 export const useCookie = vi.fn((name: string) => {
-  const cookieRef = ref<string | null>(null);
-  return cookieRef;
+  const cookieRef = ref<string | null | undefined>(cookieStore[name] ?? null);
+
+  return {
+    get value() {
+      return cookieStore[name] ?? null;
+    },
+    set value(value: string | null | undefined) {
+      cookieStore[name] = value;
+    },
+  };
 });
+
+export const clearCookieStore = (): void => {
+  Object.keys(cookieStore).forEach((key) => {
+    delete cookieStore[key];
+  });
+};
 
 export const createError = vi.fn((options: { statusCode: number; message?: string }) => {
   const error = new Error(options.message || `Error ${options.statusCode}`);
   (error as Error & { statusCode: number }).statusCode = options.statusCode;
   return error;
 });
+
+export const useNuxtApp = vi.fn(() => ({
+  runWithContext: <T>(fn: () => T): T => fn(),
+}));

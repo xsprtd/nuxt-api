@@ -6,6 +6,7 @@ export {
   navigateTo,
   useCookie,
   createError,
+  useNuxtApp,
 } from './app';
 
-export { ref, computed, reactive, watch, watchEffect } from 'vue';
+export { ref, computed, reactive, watch, watchEffect, unref } from 'vue';
