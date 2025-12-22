@@ -47,18 +47,16 @@
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
-    "link": "npm link",
-    "semantic-release": "semantic-release"
+    "link": "npm link"
   },
   "dependencies": {
     "@nuxt/kit": "^3.16.0",
-    "defu": "^6.1.4",
-    "semantic-release": "^24.2.3"
+    "defu": "^6.1.4"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.2.1",
     "@nuxt/eslint-config": "^1.2.0",
-    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/module-builder": "^1.0.2",
     "@nuxt/schema": "^3.16.0",
     "@nuxt/test-utils": "^3.17.2",
     "@types/node": "latest",
