@@ -81,3 +81,7 @@ export const useRequestHeaders = vi.fn(() => ({}));
 export const useRequestURL = vi.fn(() => ({
   origin: 'http://localhost:3000',
 }));
+
+export const defineNuxtRouteMiddleware = vi.fn(
+  <T extends (...args: unknown[]) => unknown>(middleware: T): T => middleware,
+);
