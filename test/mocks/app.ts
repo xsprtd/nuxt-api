@@ -85,3 +85,7 @@ export const useRequestURL = vi.fn(() => ({
 export const defineNuxtRouteMiddleware = vi.fn(
   <T extends (...args: unknown[]) => unknown>(middleware: T): T => middleware,
 );
+
+export const defineNuxtPlugin = vi.fn(
+  <T extends (...args: unknown[]) => unknown>(plugin: T): T => plugin,
+);

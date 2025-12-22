@@ -10,6 +10,7 @@ export {
   useRequestHeaders,
   useRequestURL,
   defineNuxtRouteMiddleware,
+  defineNuxtPlugin,
 } from './app';
 
 export { ref, computed, reactive, watch, watchEffect, unref } from 'vue';
