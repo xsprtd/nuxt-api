@@ -7,6 +7,8 @@ export {
   useCookie,
   createError,
   useNuxtApp,
+  useRequestHeaders,
+  useRequestURL,
 } from './app';
 
 export { ref, computed, reactive, watch, watchEffect, unref } from 'vue';

@@ -78,3 +78,9 @@ export const createError = vi.fn((options: { statusCode: number; message?: strin
 export const useNuxtApp = vi.fn(() => ({
   runWithContext: <T>(fn: () => T): T => fn(),
 }));
+
+export const useRequestHeaders = vi.fn(() => ({}));
+
+export const useRequestURL = vi.fn(() => ({
+  origin: 'http://localhost:3000',
+}));
