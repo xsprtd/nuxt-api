@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { useCurrentUser } from '../../../src/runtime/composables/useCurrentUser';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { useCurrentUser } from '~/src/runtime/composables/useCurrentUser';
 import { clearStateStore, setRuntimeConfigOptions } from '../../mocks/app';
 
 interface TestUser {

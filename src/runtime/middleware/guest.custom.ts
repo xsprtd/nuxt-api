@@ -1,29 +1,29 @@
-import { useApiOptions } from '../composables/useApiOptions'
-import { useAuth } from '../composables/useAuth'
-import { defineNuxtRouteMiddleware, navigateTo, createError } from '#app'
+import { useApiOptions } from '../composables/useApiOptions';
+import { useAuth } from '../composables/useAuth';
+import { defineNuxtRouteMiddleware, navigateTo, createError } from '#app';
 
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { isLoggedIn } = useAuth()
-  const { redirect } = useApiOptions()
+  const { isLoggedIn } = useAuth();
+  const { redirect } = useApiOptions();
 
   if (!isLoggedIn.value) {
-    return
+    return;
   }
 
-  const { intendedEnabled, postLogin } = redirect
+  const { intendedEnabled, postLogin } = redirect;
 
   if (intendedEnabled) {
-    const currentPath = to.path
-    const requestedRoute = to.query.redirect as string
+    const currentPath = to.path;
+    const requestedRoute = to.query.redirect as string;
 
     if (requestedRoute && requestedRoute !== currentPath) {
-      return navigateTo(requestedRoute)
+      return navigateTo(requestedRoute);
     }
   }
 
   if (postLogin) {
-    return navigateTo(postLogin, { replace: true })
+    return navigateTo(postLogin, { replace: true });
   }
 
-  throw createError({ statusCode: 403 })
-})
+  throw createError({ statusCode: 403 });
+});

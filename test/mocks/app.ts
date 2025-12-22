@@ -1,7 +1,7 @@
 import { ref, type Ref } from 'vue';
 import { vi } from 'vitest';
-import type { ModuleOptions } from '../../src/runtime/types/ModuleOptions';
-import { MODULE_CONFIG_KEY } from '../../src/runtime/helpers/config';
+import type { ModuleOptions } from '~/src/runtime/types/ModuleOptions';
+import { MODULE_CONFIG_KEY } from '~/src/runtime/helpers/config';
 import { createDefaultOptions } from '../utils/options';
 
 const stateStore: Record<string, Ref<unknown>> = {};
@@ -14,9 +14,10 @@ export const useState = <T>(key: string, init?: () => T): Ref<T> => {
 };
 
 export const clearStateStore = (): void => {
-  Object.keys(stateStore).forEach((key) => {
-    delete stateStore[key];
-  });
+  for (const key of Object.keys(stateStore)) {
+    stateStore[key] = undefined as unknown as Ref<unknown>;
+  }
+  Object.keys(stateStore).forEach(key => Reflect.deleteProperty(stateStore, key));
 };
 
 let runtimeConfigOptions: ModuleOptions = createDefaultOptions();
@@ -51,8 +52,6 @@ export const navigateTo = vi.fn();
 const cookieStore: Record<string, string | null | undefined> = {};
 
 export const useCookie = vi.fn((name: string) => {
-  const cookieRef = ref<string | null | undefined>(cookieStore[name] ?? null);
-
   return {
     get value() {
       return cookieStore[name] ?? null;
@@ -64,9 +63,7 @@ export const useCookie = vi.fn((name: string) => {
 });
 
 export const clearCookieStore = (): void => {
-  Object.keys(cookieStore).forEach((key) => {
-    delete cookieStore[key];
-  });
+  Object.keys(cookieStore).forEach(key => Reflect.deleteProperty(cookieStore, key));
 };
 
 export const createError = vi.fn((options: { statusCode: number; message?: string }) => {

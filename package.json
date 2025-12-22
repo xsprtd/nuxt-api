@@ -70,5 +70,12 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 80,
+    "tabWidth": 2
   }
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useTokenStorage } from '../../../src/runtime/composables/useTokenStorage';
+import { useTokenStorage } from '~/src/runtime/composables/useTokenStorage';
 import { clearStateStore, clearCookieStore, setRuntimeConfigOptions } from '../../mocks/app';
 
 // Mock localStorage
@@ -11,7 +11,7 @@ const localStorageMock = (() => {
       store[key] = value;
     }),
     removeItem: vi.fn((key: string) => {
-      delete store[key];
+      Reflect.deleteProperty(store, key);
     }),
     clear: () => {
       store = {};

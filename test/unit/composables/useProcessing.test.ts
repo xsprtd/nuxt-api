@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { useProcessing } from '../../../src/runtime/composables/useProcessing';
+import { useProcessing } from '~/src/runtime/composables/useProcessing';
 
 describe('useProcessing', () => {
   it('returns processing ref with initial value of false', () => {

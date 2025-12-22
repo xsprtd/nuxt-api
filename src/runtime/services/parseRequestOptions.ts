@@ -1,16 +1,16 @@
-import type { FetchContext, FetchOptions } from 'ofetch'
-import { useApiOptions } from '../composables/useApiOptions'
-import type { ModuleOptions } from '../types/ModuleOptions'
-import { useErrorBag } from '../composables/useErrorBag'
-import { useTokenStorage } from '../composables/useTokenStorage'
-import { useCookie, useRequestHeaders, useRequestURL } from '#app'
+import type { FetchContext, FetchOptions } from 'ofetch';
+import { useApiOptions } from '../composables/useApiOptions';
+import type { ModuleOptions } from '../types/ModuleOptions';
+import { useErrorBag } from '../composables/useErrorBag';
+import { useTokenStorage } from '../composables/useTokenStorage';
+import { useCookie, useRequestHeaders, useRequestURL } from '#app';
 
 /**
  * Get credentials.
  */
 const getCredentials = (): RequestCredentials | undefined => {
-  return 'credentials' in Request.prototype ? 'include' : undefined
-}
+  return 'credentials' in Request.prototype ? 'include' : undefined;
+};
 
 /**
  * Fetch and initialize the CSRF cookie.
@@ -22,12 +22,12 @@ const fetchCsrfCookie = async (
     await $fetch(config.endpoints.csrf, {
       baseURL: config.apiBaseURL,
       credentials: 'include',
-    })
+    });
   }
   catch (error) {
-    console.error('Failed to initialize CSRF cookie', error)
+    console.error('Failed to initialize CSRF cookie', error);
   }
-}
+};
 
 /**
  * Attach the CSRF header to the request.
@@ -36,25 +36,25 @@ const attachCsrfHeader = async (
   headers: HeadersInit | undefined,
   config: ModuleOptions,
 ): Promise<HeadersInit> => {
-  let csrfToken = useCookie(config.csrf.cookieName, { readonly: true })
+  let csrfToken = useCookie(config.csrf.cookieName, { readonly: true });
 
   if (!csrfToken.value) {
-    await fetchCsrfCookie(config)
-    csrfToken = useCookie(config.csrf.cookieName, { readonly: true })
+    await fetchCsrfCookie(config);
+    csrfToken = useCookie(config.csrf.cookieName, { readonly: true });
   }
 
   if (!csrfToken.value) {
     console.warn(
       `Unable to set ${config.csrf.headerName} header`,
-    )
-    return headers ?? {}
+    );
+    return headers ?? {};
   }
 
   return {
     ...headers,
     [config.csrf.headerName]: csrfToken.value,
-  }
-}
+  };
+};
 
 /**
  * Attach Referer and Origin headers.
@@ -63,17 +63,17 @@ const attachServerHeaders = (
   headers: HeadersInit | undefined,
   config: ModuleOptions,
 ): HeadersInit => {
-  const clientCookies = useRequestHeaders(['cookie'])
+  const clientCookies = useRequestHeaders(['cookie']);
 
-  const origin = config.originUrl ?? useRequestURL().origin
+  const origin = config.originUrl ?? useRequestURL().origin;
 
   return {
     ...headers,
     Referer: origin,
     Origin: origin,
     ...clientCookies,
-  }
-}
+  };
+};
 
 /**
  * Obtain and attach the authentication token to the request headers.
@@ -81,24 +81,24 @@ const attachServerHeaders = (
 const attachToken = async (
   headers: HeadersInit,
 ): Promise<HeadersInit> => {
-  const token = await useTokenStorage().get()
+  const token = await useTokenStorage().get();
 
   if (!token) {
-    console.debug('Authentication token is not set in the storage')
-    return headers
+    console.debug('Authentication token is not set in the storage');
+    return headers;
   }
 
   return {
     ...headers,
     Authorization: `Bearer ${token}`,
-  }
-}
+  };
+};
 
 const extractHeaders = (context: FetchContext): { [k: string]: string } => {
   return context.options.headers instanceof Headers
     ? Object.fromEntries<string>(context.options.headers.entries())
-    : context.options.headers
-}
+    : context.options.headers;
+};
 
 /**
  * Prepare request context.
@@ -107,17 +107,17 @@ const prepareContext = async (
   context: FetchContext,
   config: ModuleOptions,
 ): Promise<void> => {
-  const method = context.options.method?.toLowerCase() ?? 'get'
+  const method = context.options.method?.toLowerCase() ?? 'get';
 
   context.options.headers = new Headers({
     Accept: 'application/json',
     ...config.headers,
     ...(extractHeaders(context)),
-  })
+  });
 
   if (context.options.body instanceof FormData) {
-    context.options.method = 'POST'
-    context.options.body.append('_method', method.toUpperCase())
+    context.options.method = 'POST';
+    context.options.body.append('_method', method.toUpperCase());
   }
 
   if (config.authMode === 'cookie') {
@@ -127,7 +127,7 @@ const prepareContext = async (
           Object.fromEntries(context.options.headers.entries()),
           config,
         ),
-      )
+      );
     }
 
     if (['post', 'delete', 'put', 'patch'].includes(method)) {
@@ -136,7 +136,7 @@ const prepareContext = async (
           Object.fromEntries(context.options.headers.entries()),
           config,
         ),
-      )
+      );
     }
   }
   else if (config.authMode === 'token') {
@@ -144,16 +144,16 @@ const prepareContext = async (
       await attachToken(
         Object.fromEntries(context.options.headers.entries()),
       ),
-    )
+    );
   }
-}
+};
 
 /**
  * Create and configure a new fetch service instance.
  */
 export default (options?: FetchOptions): FetchOptions => {
-  const config = useApiOptions()
-  options ||= {}
+  const config = useApiOptions();
+  options ||= {};
 
   return {
     baseURL: config.apiBaseURL,
@@ -165,30 +165,30 @@ export default (options?: FetchOptions): FetchOptions => {
       if (options.onRequest) {
         if (Array.isArray(options.onRequest)) {
           for (const hook of options.onRequest) {
-            await hook(context)
+            await hook(context);
           }
         }
         else {
-          await options.onRequest(context)
+          await options.onRequest(context);
         }
       }
 
-      await prepareContext(context, config)
+      await prepareContext(context, config);
     },
 
     onResponseError: async (context): Promise<void> => {
-      useErrorBag().handle(context as unknown as Error)
+      useErrorBag().handle(context as unknown as Error);
 
       if (options.onResponseError) {
         if (Array.isArray(options.onResponseError)) {
           for (const hook of options.onResponseError) {
-            await hook(context)
+            await hook(context);
           }
         }
         else {
-          await options.onResponseError(context)
+          await options.onResponseError(context);
         }
       }
     },
-  }
-}
+  };
+};

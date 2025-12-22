@@ -1,26 +1,26 @@
-import type { RouteLocationRaw } from 'vue-router'
-import { useApiOptions } from '../composables/useApiOptions'
-import { useAuth } from '../composables/useAuth'
-import { defineNuxtRouteMiddleware, navigateTo, createError } from '#app'
+import type { RouteLocationRaw } from 'vue-router';
+import { useApiOptions } from '../composables/useApiOptions';
+import { useAuth } from '../composables/useAuth';
+import { defineNuxtRouteMiddleware, navigateTo, createError } from '#app';
 
 export default defineNuxtRouteMiddleware((to) => {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn } = useAuth();
   if (isLoggedIn.value) {
-    return
+    return;
   }
 
-  const options = useApiOptions()
-  const loginPath = options.redirect.login
+  const options = useApiOptions();
+  const loginPath = options.redirect.login;
 
   if (!isLoggedIn.value && loginPath) {
-    const redirect: RouteLocationRaw = { path: loginPath }
+    const redirect: RouteLocationRaw = { path: loginPath };
 
     if (options.redirect.intendedEnabled) {
-      redirect.query = { redirect: to.fullPath }
+      redirect.query = { redirect: to.fullPath };
     }
 
-    return navigateTo(redirect, { replace: true })
+    return navigateTo(redirect, { replace: true });
   }
 
-  throw createError({ statusCode: 403 })
-})
+  throw createError({ statusCode: 403 });
+});

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { useApiOptions } from '../../../src/runtime/composables/useApiOptions';
+import { useApiOptions } from '~/src/runtime/composables/useApiOptions';
 import { setRuntimeConfigOptions } from '../../mocks/app';
 
 describe('useApiOptions', () => {

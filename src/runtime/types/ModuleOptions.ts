@@ -1,40 +1,40 @@
-export type AuthMode = 'cookie' | 'token'
-export type TokenStorageType = 'cookie' | 'localStorage'
+export type AuthMode = 'cookie' | 'token';
+export type TokenStorageType = 'cookie' | 'localStorage';
 
 export interface ModuleOptions {
   /**
    * The base URL of the API server.
    * @example http://localhost:8000
    */
-  apiBaseURL: string
+  apiBaseURL: string;
 
   /**
    * The current application base URL for the Referrer and Origin header.
    * @example 'http://localhost:3000'
    */
-  originUrl?: string
+  originUrl?: string;
 
   /**
    * The authentication mode.
    */
-  authMode: AuthMode
+  authMode: AuthMode;
 
   /**
    * The key to use to store the authenticated user in the `useState` variable.
    */
-  userStateKey: string
+  userStateKey: string;
 
   /**
    * Defines the key used to extract user data from the `endpoints.user` API response.
    *
    * Example usage: for response `{ user: { ... } }` it would be `user`
    */
-  userResponseKey?: null | string
+  userResponseKey?: null | string;
 
   /**
    * Custom headers to include in API requests.
    */
-  headers: { [k: string]: string }
+  headers: { [k: string]: string };
 
   /**
    * The token specific options.
@@ -43,20 +43,20 @@ export interface ModuleOptions {
     /**
      * The key to store the token in the storage.
      */
-    storageKey: string
+    storageKey: string;
 
     /**
      * The storage type to use for the token.
      */
-    storageType: TokenStorageType
+    storageType: TokenStorageType;
 
     /**
      * Defines the key used to extract user data from the `endpoints.login` API response.
      *
      * Example usage: for response `{ auth_token: { ... } }` it would be `auth_token`
      */
-    responseKey: string
-  }
+    responseKey: string;
+  };
 
   /**
    * Fetch options.
@@ -65,8 +65,8 @@ export interface ModuleOptions {
     /**
      * The number of times to retry a request when it fails.
      */
-    retryAttempts: number | false
-  }
+    retryAttempts: number | false;
+  };
 
   /**
    * CSRF token options.
@@ -75,13 +75,13 @@ export interface ModuleOptions {
     /**
      * Name of the CSRF cookie to extract from server response.
      */
-    cookieName: string
+    cookieName: string;
 
     /**
      * Name of the CSRF header to pass from client to server.
      */
-    headerName: string
-  }
+    headerName: string;
+  };
 
   /**
    * API endpoints.
@@ -90,23 +90,23 @@ export interface ModuleOptions {
     /**
      * The endpoint to obtain a new CSRF token.
      */
-    csrf: string
+    csrf: string;
 
     /**
      * The authentication endpoint.
      */
-    login: string
+    login: string;
 
     /**
      * The logout endpoint.
      */
-    logout: string
+    logout: string;
 
     /**
      * The endpoint to fetch current user data.
      */
-    user: string
-  }
+    user: string;
+  };
 
   /**
    * Redirect specific settings.
@@ -115,53 +115,53 @@ export interface ModuleOptions {
     /**
      * Specifies whether to retain the requested route when redirecting after login.
      */
-    intendedEnabled: boolean
+    intendedEnabled: boolean;
 
     /**
      * Redirect path when access requires user authentication.
      * Throws a 403 error if set to false.
      */
-    login: string | false
+    login: string | false;
 
     /**
      * Redirect path after a successful login.
      * No redirection if set to false.
      */
-    postLogin: string | false
+    postLogin: string | false;
 
     /**
      * Redirect path after a logout.
      * No redirection if set to false.
      */
-    postLogout: string | false
-  }
+    postLogout: string | false;
+  };
 
   middlewareNames: {
     /**
      * Middleware name for authenticated users.
      */
-    auth: string
+    auth: string;
 
     /**
      * Middleware name for guest users.
      */
-    guest: string
-  }
+    guest: string;
+  };
 
   errorMessages: {
     /**
      * A default error message.
      */
-    default: string
+    default: string;
 
     /**
      * Error message to display when csrf token isn't valid.
      */
-    csrf: string
+    csrf: string;
 
     /**
      * Error message to display when user is not-authenticated.
      */
-    unauthenticated: string
-  }
+    unauthenticated: string;
+  };
 }

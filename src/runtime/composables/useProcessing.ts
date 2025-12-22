@@ -1,20 +1,20 @@
-import { ref, type Ref } from 'vue'
-import type { Processing } from '~/src/runtime/types/Processing'
+import { ref, type Ref } from 'vue';
+import type { Processing } from '~/src/runtime/types/Processing';
 
 export const useProcessing = (): Processing => {
-  const processing: Ref<boolean> = ref(false)
+  const processing: Ref<boolean> = ref(false);
 
   const startProcessing = (): void => {
-    processing.value = true
-  }
+    processing.value = true;
+  };
 
   const stopProcessing = (): void => {
-    processing.value = false
-  }
+    processing.value = false;
+  };
 
   return {
     processing,
     startProcessing,
     stopProcessing,
-  }
-}
+  };
+};

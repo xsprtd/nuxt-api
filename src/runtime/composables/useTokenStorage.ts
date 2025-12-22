@@ -1,70 +1,70 @@
-import { useApiOptions } from './useApiOptions'
-import { unref } from '#imports'
-import { useCookie, useState, useNuxtApp } from '#app'
+import { useApiOptions } from './useApiOptions';
+import { unref } from '#imports';
+import { useCookie, useState, useNuxtApp } from '#app';
 
 const cookieProvider = {
   get(tokenKey: string) {
-    const cookie = useCookie(tokenKey, { readonly: true })
-    return unref(cookie.value)
+    const cookie = useCookie(tokenKey, { readonly: true });
+    return unref(cookie.value);
   },
 
   set(tokenKey: string, token?: string) {
-    const cookie = useCookie(tokenKey, { secure: true })
-    cookie.value = token
+    const cookie = useCookie(tokenKey, { secure: true });
+    cookie.value = token;
   },
-}
+};
 
 const localStorageProvider = {
   get(tokenKey: string) {
     if (import.meta.server) {
-      return undefined
+      return undefined;
     }
-    return window.localStorage.getItem(tokenKey) ?? undefined
+    return window.localStorage.getItem(tokenKey) ?? undefined;
   },
 
   set(tokenKey: string, token?: string) {
     if (import.meta.server) {
-      return
+      return;
     }
 
     if (!token) {
-      window.localStorage.removeItem(tokenKey)
-      return
+      window.localStorage.removeItem(tokenKey);
+      return;
     }
 
-    window.localStorage.setItem(tokenKey, token)
+    window.localStorage.setItem(tokenKey, token);
   },
-}
+};
 
 export function useTokenStorage(): {
-  get(): Promise<string | undefined>
-  set(tokenData?: string | null): Promise<void>
+  get(): Promise<string | undefined>;
+  set(tokenData?: string | null): Promise<void>;
 } {
-  const { token } = useApiOptions()
-  const nuxtApp = useNuxtApp()
+  const { token } = useApiOptions();
+  const nuxtApp = useNuxtApp();
 
   const provider
     = token.storageType === 'localStorage'
       ? localStorageProvider
-      : cookieProvider
+      : cookieProvider;
 
   const tokenState = useState<string | undefined>(
     token.storageKey,
     () => undefined,
-  )
+  );
 
   return {
     get: async () => {
       return nuxtApp.runWithContext(() => {
-        return provider.get(token.storageKey) ?? tokenState.value
-      })
+        return provider.get(token.storageKey) ?? tokenState.value;
+      });
     },
 
     set: async (tokenData?: string) => {
       await nuxtApp.runWithContext(() => {
-        provider.set(token.storageKey, tokenData)
-        tokenState.value = tokenData
-      })
+        provider.set(token.storageKey, tokenData);
+        tokenState.value = tokenData;
+      });
     },
-  }
+  };
 }

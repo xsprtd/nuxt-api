@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import parseRequestOptions from '../../../src/runtime/services/parseRequestOptions';
+import parseRequestOptions from '~/src/runtime/services/parseRequestOptions';
 import { setRuntimeConfigOptions, clearStateStore, clearCookieStore, useCookie } from '../../mocks/app';
 import { createFetchContext } from '../../utils/fetch';
 

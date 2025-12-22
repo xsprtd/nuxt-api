@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { getAuthUser } from '../../../src/runtime/services/getAuthUser';
+import { getAuthUser } from '~/src/runtime/services/getAuthUser';
 import { setRuntimeConfigOptions, clearStateStore, clearCookieStore } from '../../mocks/app';
 
 // Mock $fetch and $fetch.create

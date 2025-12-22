@@ -1,7 +1,7 @@
-import type { Ref } from 'vue'
+import type { Ref } from 'vue';
 
 export interface Processing {
-  processing: Ref<boolean>
-  startProcessing: () => void
-  stopProcessing: () => void
+  processing: Ref<boolean>;
+  startProcessing: () => void;
+  stopProcessing: () => void;
 }

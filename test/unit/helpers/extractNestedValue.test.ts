@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import extractNestedValue from '../../../src/runtime/helpers/extractNestedValue';
+import extractNestedValue from '~/src/runtime/helpers/extractNestedValue';
 
 describe('extractNestedValue', () => {
   describe('with null or empty key', () => {

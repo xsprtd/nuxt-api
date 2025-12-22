@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useErrorBag } from '../../../src/runtime/composables/useErrorBag';
+import { useErrorBag } from '~/src/runtime/composables/useErrorBag';
 import { clearStateStore, setRuntimeConfigOptions } from '../../mocks/app';
 
 const createResponseError = (status: number, data?: unknown) => {

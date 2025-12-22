@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 export default defineConfig({
   test: {
@@ -19,6 +19,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '~': resolve(__dirname, './'),
       '#imports': resolve(__dirname, './test/mocks/imports.ts'),
       '#app': resolve(__dirname, './test/mocks/app.ts'),
     },
