@@ -1,5 +1,5 @@
 import { ref, type Ref } from 'vue';
-import type { Processing } from '~/src/runtime/types/Processing';
+import type { Processing } from '../types/Processing';
 
 export const useProcessing = (): Processing => {
   const processing: Ref<boolean> = ref(false);

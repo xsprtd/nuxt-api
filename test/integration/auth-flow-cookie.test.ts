@@ -9,7 +9,6 @@ import {
   setRuntimeConfigOptions,
   navigateTo,
   useRoute,
-  useCookie,
 } from '../mocks/app';
 
 // Mock $fetch and $fetch.create

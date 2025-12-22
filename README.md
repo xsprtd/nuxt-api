@@ -2537,20 +2537,41 @@ This compiles the TypeScript source and generates:
 
 ### Testing
 
-Before publishing, run all tests:
+The module includes a comprehensive test suite with **191 tests** covering all core functionality.
+
+**Coverage Summary:**
+- **95.29%** statement coverage
+- **92.81%** branch coverage
+- **97.82%** function coverage
 
 ```bash
-# Lint code
-npm run lint
-
-# Run unit tests
+# Run all tests
 npm run test
 
-# Watch mode for tests
+# Run tests in watch mode
 npm run test:watch
+
+# Run tests with coverage report
+npx vitest run --coverage
 
 # Type checking
 npm run test:types
+
+# Lint code
+npm run lint
+```
+
+**Test Structure:**
+```
+test/
+├── mocks/           # Nuxt composable mocks
+├── utils/           # Test utilities and helpers
+├── unit/            # Unit tests for composables, services, middleware
+│   ├── composables/
+│   ├── helpers/
+│   ├── middleware/
+│   └── services/
+└── integration/     # Integration tests for full auth flows
 ```
 
 ### Local Testing

@@ -22,11 +22,6 @@ interface TestUser {
   email: string;
 }
 
-interface LoginResponse {
-  token?: string;
-  user?: TestUser;
-}
-
 describe('useAuth', () => {
   beforeEach(() => {
     clearStateStore();
