@@ -38,8 +38,8 @@ export default defineNuxtModule<ModuleOptions>({
       postLogout: '/login',
     },
     middlewareNames: {
-      auth: 'auth',
-      guest: 'guest',
+      auth: false,
+      guest: false,
     },
     errorMessages: {
       default: 'Whoops - something went wrong',
