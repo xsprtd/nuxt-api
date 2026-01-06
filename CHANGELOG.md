@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-01-06
+
+### Breaking Changes
+
+- **Middleware disabled by default**: `middlewareNames.auth` and `middlewareNames.guest` now default to `false` instead of `'auth'` and `'guest'`. This prevents conflicts when consuming applications have their own middleware with the same names. To restore the previous behavior, explicitly set the middleware names in your config:
+  ```typescript
+  nuxtApi: {
+    middlewareNames: {
+      auth: 'auth',
+      guest: 'guest',
+    }
+  }
+  ```
+
+### Added
+
+- New `useAuthMiddleware` composable for building custom middleware with package's auth state
+  - `checkAuth(to)` - Returns authentication status and redirect info for protected routes
+  - `checkGuest(to)` - Returns authentication status and redirect info for guest-only routes
+- New `AuthCheckResult` type exported from `types/Auth.ts`
+- 11 new tests for `useAuthMiddleware` composable (total now 202 tests)
+
+### Changed
+
+- `middlewareNames` type updated to accept `string | false` for both `auth` and `guest`
+- Middleware registration is now conditional based on configuration
+- Updated README with comprehensive middleware documentation and examples
+
 ## [1.4.0] - 2025-12-22
 
 ### Added

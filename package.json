@@ -1,6 +1,6 @@
 {
   "name": "@xsprtd/nuxt-api",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Nuxt API Authentication and Http Client",
   "author": "Sebastian Sulinski <seb@sulinski.me>",
   "keywords": [
