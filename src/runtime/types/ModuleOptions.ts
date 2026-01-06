@@ -139,13 +139,17 @@ export interface ModuleOptions {
   middlewareNames: {
     /**
      * Middleware name for authenticated users.
+     * Set to a string to register the middleware with that name.
+     * Set to `false` to disable automatic registration (default).
      */
-    auth: string;
+    auth: string | false;
 
     /**
      * Middleware name for guest users.
+     * Set to a string to register the middleware with that name.
+     * Set to `false` to disable automatic registration (default).
      */
-    guest: string;
+    guest: string | false;
   };
 
   errorMessages: {
