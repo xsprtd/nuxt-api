@@ -1,6 +1,12 @@
 import type { FetchOptions } from 'ofetch';
 import type { ComputedRef, Ref } from 'vue';
+import type { RouteLocationRaw } from 'vue-router';
 import type { ErrorBagInterface } from './Http';
+
+export interface AuthCheckResult {
+  isAuthenticated: boolean;
+  redirectTo: RouteLocationRaw | null;
+}
 
 export interface Auth<T> {
   user: Ref<T | null>;
