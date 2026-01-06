@@ -1,4 +1,4 @@
-import type { RouteLocationNormalized } from 'vue-router';
+import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router';
 import type { AuthCheckResult } from '../types/Auth';
 import { useAuth } from './useAuth';
 import { useApiOptions } from './useApiOptions';

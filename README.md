@@ -72,8 +72,8 @@ export default defineNuxtConfig({
       postLogout: '/login',
     },
     middlewareNames: {
-      auth: 'auth',
-      guest: 'guest',
+      auth: false,
+      guest: false,
     },
     errorMessages: {
       default: 'Whoops - something went wrong',
@@ -221,13 +221,17 @@ interface ModuleOptions {
   middlewareNames: {
     /**
      * Middleware name for authenticated users.
+     * Set to a string to register the middleware with that name.
+     * Set to `false` to disable automatic registration (default).
      */
-    auth: string
+    auth: string | false
 
     /**
      * Middleware name for guest users.
+     * Set to a string to register the middleware with that name.
+     * Set to `false` to disable automatic registration (default).
      */
-    guest: string
+    guest: string | false
   }
 
   errorMessages: {
@@ -2427,8 +2431,23 @@ interface ErrorBagInterface {
 
 ### Middleware
 
-- `auth` - Protects routes, requires authentication
-- `guest` - Restricts authenticated users
+By default, the module does **not** register any middleware to avoid conflicts with your application's own middleware. You can opt-in to the built-in middleware by configuring `middlewareNames`:
+
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  nuxtApi: {
+    middlewareNames: {
+      auth: 'auth',   // Register auth middleware
+      guest: 'guest', // Register guest middleware
+    }
+  }
+})
+```
+
+Once enabled:
+- `auth` - Protects routes, requires authentication. Redirects unauthenticated users to the login page.
+- `guest` - Restricts authenticated users. Redirects authenticated users to the post-login page.
 
 ```vue
 <script lang="ts" setup>
@@ -2437,6 +2456,104 @@ definePageMeta({
 })
 </script>
 ```
+
+#### Custom Middleware with useAuthMiddleware
+
+If you need custom middleware logic while still leveraging the package's authentication state, use the `useAuthMiddleware` composable:
+
+```typescript
+// middleware/auth.ts
+export default defineNuxtRouteMiddleware((to) => {
+  const { checkAuth } = useAuthMiddleware()
+  const result = checkAuth(to)
+
+  if (!result.isAuthenticated) {
+    if (result.redirectTo) {
+      return navigateTo(result.redirectTo, { replace: true })
+    }
+    // Custom handling when no redirect is configured
+    throw createError({ statusCode: 403, message: 'Access denied' })
+  }
+
+  // Add your custom logic here (e.g., role checks, permissions)
+})
+```
+
+```typescript
+// middleware/guest.ts
+export default defineNuxtRouteMiddleware((to) => {
+  const { checkGuest } = useAuthMiddleware()
+  const result = checkGuest(to)
+
+  if (result.isAuthenticated && result.redirectTo) {
+    return navigateTo(result.redirectTo, { replace: true })
+  }
+
+  // Add your custom logic here
+})
+```
+
+#### Combined Auth Middleware Example
+
+A single middleware that handles both authenticated and guest routes:
+
+```typescript
+// middleware/auth-guard.ts
+export default defineNuxtRouteMiddleware((to) => {
+  const { isLoggedIn, checkAuth, checkGuest } = useAuthMiddleware()
+  const isGuestRoute = to.meta.guest === true
+
+  if (isGuestRoute) {
+    // Guest-only route (e.g., login page)
+    const result = checkGuest(to)
+    if (result.isAuthenticated && result.redirectTo) {
+      return navigateTo(result.redirectTo, { replace: true })
+    }
+  } else if (to.meta.auth !== false) {
+    // Protected route (default behavior)
+    const result = checkAuth(to)
+    if (!result.isAuthenticated && result.redirectTo) {
+      return navigateTo(result.redirectTo, { replace: true })
+    }
+  }
+})
+```
+
+### useAuthMiddleware Composable
+
+The `useAuthMiddleware` composable provides helper functions for building custom middleware.
+
+#### Properties
+
+- `isLoggedIn: ComputedRef<boolean>` - Whether user is authenticated (from `useAuth`)
+
+#### Methods
+
+##### checkAuth()
+
+Checks if user should be allowed to access authenticated routes.
+
+```typescript
+checkAuth(to: RouteLocationNormalized): AuthCheckResult
+```
+
+Returns:
+```typescript
+interface AuthCheckResult {
+  isAuthenticated: boolean
+  redirectTo: RouteLocationRaw | null  // null if no redirect configured
+}
+```
+
+##### checkGuest()
+
+Checks if authenticated user should be redirected away from guest-only routes.
+
+```typescript
+checkGuest(to: RouteLocationNormalized): AuthCheckResult
+```
+
+Returns the same `AuthCheckResult` interface.
 
 ---
 
@@ -2537,7 +2654,7 @@ This compiles the TypeScript source and generates:
 
 ### Testing
 
-The module includes a comprehensive test suite with **191 tests** covering all core functionality.
+The module includes a comprehensive test suite with **202 tests** covering all core functionality.
 
 **Coverage Summary:**
 - **95.29%** statement coverage
