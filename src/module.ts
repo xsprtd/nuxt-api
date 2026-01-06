@@ -64,14 +64,18 @@ export default defineNuxtModule<ModuleOptions>({
     addPlugin(resolver.resolve('./runtime/plugin'));
     addImportsDir(resolver.resolve('./runtime/composables'));
 
-    addRouteMiddleware({
-      name: moduleOptions.middlewareNames.auth,
-      path: resolver.resolve('./runtime/middleware/auth.custom'),
-    });
+    if (moduleOptions.middlewareNames.auth !== false) {
+      addRouteMiddleware({
+        name: moduleOptions.middlewareNames.auth,
+        path: resolver.resolve('./runtime/middleware/auth.custom'),
+      });
+    }
 
-    addRouteMiddleware({
-      name: moduleOptions.middlewareNames.guest,
-      path: resolver.resolve('./runtime/middleware/guest.custom'),
-    });
+    if (moduleOptions.middlewareNames.guest !== false) {
+      addRouteMiddleware({
+        name: moduleOptions.middlewareNames.guest,
+        path: resolver.resolve('./runtime/middleware/guest.custom'),
+      });
+    }
   },
 });
